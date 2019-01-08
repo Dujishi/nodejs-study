@@ -7,15 +7,16 @@
   <title>Document</title>
 </head>
 <body>
-  <h2>人员新增</h2>
-  <form action="/doAdd" method="post">
-    用户名: <input type="text" name="name">
+  <h2>人员编辑</h2>
+  <form action="/doEdit" method="post">
+    <input type="hidden" name="id" value="{{@list._id}}">
+    用户名: <input type="text" name="name" value="{{list.name}}">
     <br>
     <br>
-    年龄: <input type="text" name="age">
+    年龄: <input type="text" name="age" value="{{list.age}}">
     <br>
     <br>
-    性别: <input type="text" name="sex">
+    性别: <input type="text" name="sex" value="{{list.sex}}">
     <br>
     <br>
     <input type="submit" value="提交">

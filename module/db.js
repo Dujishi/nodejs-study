@@ -2,6 +2,7 @@
 
 var MongoClient = require('mongodb').MongoClient
 var Config = require('../module/config')
+var ObjectId = require('mongodb').ObjectId
 
 class Db{
 
@@ -79,6 +80,10 @@ class Db{
     })
    })
   }
+
+ getObjectId(id){  //MongoDB 数据id转换
+   return new ObjectId(id)
+ }
 }
 
 module.exports = Db.getInstance()

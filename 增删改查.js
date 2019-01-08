@@ -31,6 +31,17 @@ router
     await ctx.render('add')
 })  
 
+//编辑人员
+.get('/edit',async (ctx,next)=>{
+    //获取用户信息
+    let id = ctx.query.id
+    let data = await Db.find('user',{'_id':Db.getObjectId(id)})
+
+    await ctx.render('edit',{
+        list:data[0]
+    })
+})  
+
 //执行新增操作
 .post('/doAdd',async (ctx,next)=>{
     let data=await Db.insert('user',ctx.request.body);
@@ -43,6 +54,41 @@ router
         ctx.redirect('/add');
     }
 })  
+
+//执行编辑操作
+.post('/doEdit',async (ctx,next)=>{
+    let id = ctx.request.body.id
+    let name = ctx.request.body.name
+    let sex = ctx.request.body.sex
+    let age = ctx.request.body.age
+
+    let data=await Db.update('user',{'_id':Db.getObjectId(id)},{
+        name,age,sex
+    });
+
+    try{
+        if(data.result.ok){
+            ctx.redirect('/')
+        }
+    }catch(err){
+        console.log(err)
+    }
+}) 
+
+//执行删除操作
+.get('/doRemove',async (ctx,next)=>{
+    let id = ctx.query.id
+    console.log(id)
+    let data=await Db.remove('user',{'_id':Db.getObjectId(id)});
+
+    try{
+        if(data.result.ok){
+            ctx.redirect('/')
+        }
+    }catch(err){
+        console.log(err)
+    }
+}) 
 
 
 app
