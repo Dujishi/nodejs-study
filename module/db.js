@@ -20,7 +20,7 @@ class Db{
   connect(){
     return new Promise((resolve,reject)=>{
       if(!this.dbClient){
-        MongoClient.connect(Config.dbUrl,(err,client)=>{
+        MongoClient.connect(Config.dbUrl,{ useNewUrlParser: true },(err,client)=>{
           if(err){
            reject(err)
           }else{
@@ -35,14 +35,37 @@ class Db{
     })
   }
 
-  add(){
-
+  remove(collectionName,json){
+    return new Promise((resolve,reject)=>{
+      this.connect().then(db=>{
+        db.collection(collectionName).removeOne(json,(err,result)=>{
+          if(err) reject(err)
+          else resolve(result)
+        })
+      })
+    })
   }
-  delete(){
-
+  update(collectionName,json1,json2){
+    return new Promise((resolve,reject)=>{
+      this.connect().then(db=>{
+        db.collection(collectionName).updateOne(json1,{
+          $set:json2
+        },(err,result)=>{
+          if(err) reject(err)
+          else resolve(result)
+        })
+      })
+    })
   }
-  update(){
-
+  insert(collectionName,json){
+    return new Promise((resolve,reject)=>{
+      this.connect().then(db=>{
+        db.collection(collectionName).insertOne(json,(err,result)=>{
+          if(err) reject(err)
+          else resolve(result)
+        })
+      })
+    })
   }
 
   find(collectionName,json){
@@ -56,10 +79,6 @@ class Db{
     })
    })
   }
-
- 
-
- 
 }
 
 module.exports = Db.getInstance()
